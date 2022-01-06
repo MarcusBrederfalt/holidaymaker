@@ -29,7 +29,7 @@ public class Menu {
             System.out.println("2. Show all guests");
             System.out.println("3. Show all hotels");
             System.out.println("4. Show facilities connected to hotels");
-            System.out.println("4. Exit program");
+            System.out.println("5. Exit program");
 
 
             choice = Integer.parseInt(scanner.nextLine());
@@ -39,6 +39,17 @@ public class Menu {
 
                 case 1:
                     createGuest();
+
+                    System.out.println("Do you want to add another guest? Y/N?");
+                    String selection = scanner.nextLine();
+
+                    if (selection == "Y" || selection == "y" ) {
+                        createGuest();
+                    }
+                    else if (selection == "N" || selection == "n") {
+                        break;
+                    }
+
 
                     break;
 

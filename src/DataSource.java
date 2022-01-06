@@ -105,8 +105,8 @@ public class DataSource {
 
 
         String query = "SELECT hotel_facilities.Hotel_Facitilies_Name, " +
-                "facility.Facility_Name FROM hotel_facilities INNER JOIN facility ON " +
-                "hotel_facilities.Hotel_Facilities_ID = facility.Hotel_Facilities_ID";
+                "facility.Facility_Name, hotel.Hotel_Name FROM hotel_facilities INNER JOIN facility ON " +
+                "hotel_facilities.Hotel_Facilities_ID = facility.Hotel_Facilities_ID INNER JOIN hotel ON hotel.Hotel_ID = facility.Hotel_ID";
 
         try {
             PreparedStatement preparedStatement = conn.prepareStatement(query);
@@ -116,10 +116,8 @@ public class DataSource {
 
                String hotel_facilities_Name = resultSet.getString("Hotel_Facitilies_Name");
                String facility_Name = resultSet.getString("Facility_Name");
-                System.out.println("Facility name: " + facility_Name + "  " + "Type of facility: " + hotel_facilities_Name);
-
-
-
+               String hotelName = resultSet.getString("Hotel_Name");
+                System.out.println("Facility name: " + facility_Name + "  " + "Type of facility: " + hotel_facilities_Name + "" + hotelName);
 
             }
         } catch (SQLException e) {
