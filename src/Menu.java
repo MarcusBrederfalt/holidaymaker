@@ -7,6 +7,7 @@ public class Menu {
     Scanner scanner;
     DataSource ds;
     private int choice;
+    String menuOption;
 
     public Menu() {
         scanner = new Scanner(System.in);
@@ -21,11 +22,13 @@ public class Menu {
 
         System.out.println("Welcome to the holiday booking system");
         System.out.println("");
-        System.out.println("Please make a choice");
+
 
         boolean runMenu = true;
         while (runMenu) {
 
+            System.out.println("Main Menu");
+            System.out.println();
             System.out.println("1. Create a guest");
             System.out.println("2. Show all guests");
             System.out.println("3. Add guests to a reservation");
@@ -88,8 +91,10 @@ public class Menu {
     private void showAllGuest() {
         ArrayList<Guest> guests = ds.getAllGuests();
         for (Guest guest : guests) {
+
             System.out.println(guest);
         }
+        Output.threadSleep();
     }
 
     private int createGuest() {
@@ -116,6 +121,9 @@ public class Menu {
         for (Hotel hotel : hotels) {
             System.out.println(hotel);
         }
+        Output.pause();
+
+        Output.emptyScreen();
 
     }
 
