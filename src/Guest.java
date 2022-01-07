@@ -7,11 +7,11 @@ public class Guest {
     private String date_Of_Birth;
     private int guest_ID;
     private int reservation_ID;
-    private int company_ID;
+
 
 
     public Guest (String first_Name, String last_Name, String phoneNumber, String email_Adress, String date_Of_Birth,
-                  int guest_ID, int reservation_ID, int company_ID) {
+                  int guest_ID, int reservation_ID) {
         this.first_Name = first_Name;
         this.last_Name = last_Name;
         this.phoneNumber = phoneNumber;
@@ -19,7 +19,7 @@ public class Guest {
         this.date_Of_Birth = date_Of_Birth;
         this.guest_ID = guest_ID;
         this.reservation_ID = reservation_ID;
-        this.company_ID = company_ID;
+
     }
 
     public Guest (String first_Name, String last_Name, String phoneNumber, String email_Adress, String date_Of_Birth) {
@@ -86,15 +86,12 @@ public class Guest {
         this.reservation_ID = reservation_ID;
     }
 
-    public int getCompany_ID() {
-        return company_ID;
-    }
 
 
 
     @Override
     public String toString() {
         return first_Name + " " + last_Name + " " + phoneNumber + " " + email_Adress + " " + date_Of_Birth +
-                " " + guest_ID + " " + reservation_ID + " " + company_ID;
+                " " + guest_ID + " " + reservation_ID ;
     }
 }

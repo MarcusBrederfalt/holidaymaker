@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public class DataSource {
 
+    int counter = 0;
 
     private Connection conn = null;
 
@@ -32,10 +33,10 @@ public class DataSource {
                 String dateOfBirth = resultSet.getString("Date_Of_Birth");
                 int guestID = resultSet.getInt("Guest_ID");
                 int reservationID = resultSet.getInt("Reservation_ID");
-                int company_ID = resultSet.getInt("company_ID");
+
 
                 guests.add(new Guest(firstName, lastName, phoneNumber, emailAdress, dateOfBirth, guestID,
-                        reservationID, company_ID));
+                        reservationID));
 
             }
 
@@ -118,13 +119,19 @@ public class DataSource {
 
             while (resultSet.next()) {
 
-               String hotel_facilities_Name = resultSet.getString("Hotel_Facitilies_Name");
-               String facility_Name = resultSet.getString("Facility_Name");
-               String hotelName = resultSet.getString("Hotel_Name");
-               int hotel_ID = resultSet.getInt("Hotel_ID");
-               System.out.println("Facility name: " + facility_Name + "  " + "Type of facility: " + hotel_facilities_Name + " Belong to hotel: " + hotelName + hotel_ID);
+                    counter ++;
 
-            }
+                    String hotel_facilities_Name = resultSet.getString("Hotel_Facitilies_Name");
+                    String facility_Name = resultSet.getString("Facility_Name");
+                    String hotelName = resultSet.getString("Hotel_Name");
+                    int hotel_ID = resultSet.getInt("Hotel_ID");
+                    System.out.println("Facility name: " + facility_Name + "  " + "Type of facility: " + hotel_facilities_Name + " Belong to hotel: " + hotelName + hotel_ID);
+
+                }
+                if (counter == 0) {
+                    System.out.println("The hotel dont have any facilites");
+                }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -174,6 +181,36 @@ public class DataSource {
             e.printStackTrace();
         }
 
+    }
+
+    public ArrayList<Guest> getGuestByReservation(int reservation_ID) {
+
+        ArrayList<Guest> guests = new ArrayList<>();
+        String query = "SELECT First_Name, Last_Name, Phone_Number, Email_Adress, Date_Of_Birth FROM guest WHERE Reservation_ID = ?";
+
+        try {
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setInt(1, reservation_ID);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+
+            while (resultSet.next()) {
+                String firstName = resultSet.getString("First_Name");
+                String lastName = resultSet.getString("Last_Name");
+                String phoneNumber = resultSet.getString("Phone_Number");
+                String emailAdress = resultSet.getString("Email_Adress");
+                String dateOfBirth = resultSet.getString("Date_Of_Birth");
+
+
+                guests.add(new Guest(firstName, lastName, phoneNumber, emailAdress, dateOfBirth));
+
+            }
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return guests;
     }
 
 }

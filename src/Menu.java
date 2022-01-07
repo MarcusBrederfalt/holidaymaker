@@ -20,6 +20,7 @@ public class Menu {
     public void mainMenu() {
 
         System.out.println("Welcome to the holiday booking system");
+        System.out.println("");
         System.out.println("Please make a choice");
 
         boolean runMenu = true;
@@ -27,10 +28,11 @@ public class Menu {
 
             System.out.println("1. Create a guest");
             System.out.println("2. Show all guests");
-            System.out.println("3. Add guests to reservation");
-            System.out.println("4. Show all hotels");
-            System.out.println("5. Show facilities connected to hotels");
-            System.out.println("6. Exit program");
+            System.out.println("3. Add guests to a reservation");
+            System.out.println("4. Show guests in a reservation");
+            System.out.println("5. Get a list of all the hotels");
+            System.out.println("6. Show facilities connected to hotels");
+            System.out.println("7. Exit program");
 
 
             choice = Integer.parseInt(scanner.nextLine());
@@ -39,7 +41,7 @@ public class Menu {
             switch (choice) {
 
                 case 1:
-                    System.out.println("Guest created with ID = " + createGuest() + " in database");
+                    System.out.println("Guest created with ID = " + createGuest());
 
                     System.out.println("Do you want to add another guest? Y/N?");
                     String selection = scanner.nextLine();
@@ -62,16 +64,20 @@ public class Menu {
                     break;
 
                 case 4:
-                    ds.getAllFacilitys(2);
+                    showGuestsByReservation();
                     break;
 
                 case 5:
-
-                    break;
+                   showAllHotels();
+                   break;
 
                 case 6:
+                    ds.getAllFacilitys(3);
+                    break;
+
+                case 7:
                     System.out.println("Welcome back, exiting the program");
-                    System.exit(0);
+                    runMenu = false;
             }
 
 
@@ -122,6 +128,23 @@ public class Menu {
     }
 
 
+    public void showGuestsByReservation() {
+
+        System.out.println("Please enter a reservation id");
+        int reservation_ID;
+        reservation_ID = Integer.parseInt(scanner.nextLine());
+        ArrayList<Guest> guests = ds.getGuestByReservation(reservation_ID);
+        System.out.println("People in reservation with reservation ID " + reservation_ID + " :");
+        for (Guest guest : guests) {
+            System.out.println(guest);
+        }
+
+    }
+
+    public void get_facilitiesByHotels() {
+
+
+    }
 
     }
 
