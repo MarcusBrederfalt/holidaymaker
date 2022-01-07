@@ -32,9 +32,10 @@ public class DataSource {
                 String dateOfBirth = resultSet.getString("Date_Of_Birth");
                 int guestID = resultSet.getInt("Guest_ID");
                 int reservationID = resultSet.getInt("Reservation_ID");
+                int company_ID = resultSet.getInt("company_ID");
 
                 guests.add(new Guest(firstName, lastName, phoneNumber, emailAdress, dateOfBirth, guestID,
-                        reservationID));
+                        reservationID, company_ID));
 
             }
 
@@ -101,15 +102,18 @@ public class DataSource {
         return hotels;
     }
 
-    public void getAllFacilitys() {
+    public void getAllFacilitys(int Hotel_ID) {
 
 
         String query = "SELECT hotel_facilities.Hotel_Facitilies_Name, " +
-                "facility.Facility_Name, hotel.Hotel_Name FROM hotel_facilities INNER JOIN facility ON " +
-                "hotel_facilities.Hotel_Facilities_ID = facility.Hotel_Facilities_ID INNER JOIN hotel ON hotel.Hotel_ID = facility.Hotel_ID";
+                "facility.Facility_Name, hotel.Hotel_Name, hotel.Hotel_ID FROM hotel_facilities INNER JOIN facility ON " +
+                "hotel_facilities.Hotel_Facilities_ID = facility.Hotel_Facilities_ID INNER JOIN hotel ON hotel.Hotel_ID = facility.Hotel_ID WHERE hotel.Hotel_ID = ?";
 
         try {
             PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setInt(1, Hotel_ID);
+
+
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
@@ -117,10 +121,56 @@ public class DataSource {
                String hotel_facilities_Name = resultSet.getString("Hotel_Facitilies_Name");
                String facility_Name = resultSet.getString("Facility_Name");
                String hotelName = resultSet.getString("Hotel_Name");
-                System.out.println("Facility name: " + facility_Name + "  " + "Type of facility: " + hotel_facilities_Name + "" + hotelName);
+               int hotel_ID = resultSet.getInt("Hotel_ID");
+               System.out.println("Facility name: " + facility_Name + "  " + "Type of facility: " + hotel_facilities_Name + " Belong to hotel: " + hotelName + hotel_ID);
 
             }
         } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+    public ArrayList<Reservation> getAllReservations() {
+
+        ArrayList<Reservation> reservations = new ArrayList<>();
+        String query = "SELECT Reservation_ID FROM reservation";
+
+        try {
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+
+                int reservationID = resultSet.getInt("Reservation_ID");
+
+                reservations.add(new Reservation(reservationID));
+
+            }
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return reservations;
+    }
+
+    public void addGuestToReservation (int addReservation_ID, int addGuestID) {
+
+        String query = "UPDATE guest SET Reservation_ID = ? WHERE Guest_ID = ?";
+
+
+        try {
+            PreparedStatement statement = conn.prepareStatement(query);
+
+            statement.setInt(1, addReservation_ID);
+            statement.setInt(2, addGuestID);
+
+            statement.executeUpdate();
+        }
+
+        catch (Exception e) {
             e.printStackTrace();
         }
 

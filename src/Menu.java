@@ -27,9 +27,10 @@ public class Menu {
 
             System.out.println("1. Create a guest");
             System.out.println("2. Show all guests");
-            System.out.println("3. Show all hotels");
-            System.out.println("4. Show facilities connected to hotels");
-            System.out.println("5. Exit program");
+            System.out.println("3. Add guests to reservation");
+            System.out.println("4. Show all hotels");
+            System.out.println("5. Show facilities connected to hotels");
+            System.out.println("6. Exit program");
 
 
             choice = Integer.parseInt(scanner.nextLine());
@@ -38,15 +39,14 @@ public class Menu {
             switch (choice) {
 
                 case 1:
-                    createGuest();
+                    System.out.println("Guest created with ID = " + createGuest() + " in database");
 
                     System.out.println("Do you want to add another guest? Y/N?");
                     String selection = scanner.nextLine();
 
-                    if (selection == "Y" || selection == "y" ) {
+                    if (selection == "Y" || selection == "y") {
                         createGuest();
-                    }
-                    else if (selection == "N" || selection == "n") {
+                    } else if (selection == "N" || selection == "n") {
                         break;
                     }
 
@@ -58,14 +58,18 @@ public class Menu {
                     break;
 
                 case 3:
-                    showAllHotels();
+                    addPeopleToReservation();
                     break;
 
                 case 4:
-                    ds.getAllFacilitys();
+                    ds.getAllFacilitys(2);
                     break;
 
                 case 5:
+
+                    break;
+
+                case 6:
                     System.out.println("Welcome back, exiting the program");
                     System.exit(0);
             }
@@ -109,8 +113,16 @@ public class Menu {
 
     }
 
+    public void addPeopleToReservation () {
+        System.out.println("Which reservation do you want to add to?");
+        int reservationID = Integer.parseInt(scanner.nextLine());
+        System.out.println("Which guest do you want to include in the reservation?");
+        int addGuestID = Integer.parseInt(scanner.nextLine());
+        ds.addGuestToReservation(reservationID, addGuestID);
+    }
 
 
-        }
+
+    }
 
 
