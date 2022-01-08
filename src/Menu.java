@@ -84,7 +84,6 @@ public class Menu {
                     break;
 
                 case 7:
-
                     break;
                 case 8:
                     System.out.println("Welcome back, exiting the program");
@@ -191,7 +190,7 @@ public class Menu {
 
     }
 
-    public int searchFreeRoomsAndBook() {
+    public void searchFreeRoomsAndBook() {
 
         boolean runReservation = true;
         int bookHotel_ID;
@@ -202,56 +201,81 @@ public class Menu {
 
         while (runReservation) {
 
-            System.out.println("1. Search for availible rooms");
-            System.out.println("2. Book a room");
-
+            System.out.println("1. Search for availible rooms and book them");
 
             int reservationChoice = Integer.parseInt(scanner.nextLine());
 
             switch (reservationChoice) {
 
                 case 1:
-                    System.out.println("Which Hotel do you want to book? Please enter Hotel ID");
+                    System.out.println("Which Hotel do you want to search for rooms? Please enter Hotel ID");
+                    System.out.println("Here is a list of the hotels:");
+                    ArrayList<Hotel> hotels = ds.getAllHotels();
+                    for (Hotel hotel : hotels) {
+                        System.out.println(hotel);
+
+
+                        }
+
+                    }
+
                     bookHotel_ID = Integer.parseInt(scanner.nextLine());
 
 
                     System.out.println("Which room size do you want to search for? Press 1 for Single room" +
                             "2 for a double room and 3 for a suite");
                     bookRoomSize = Integer.parseInt(scanner.nextLine());
-                    System.out.println("When do you want to check in? Please enter a date in this format year-month-day");
+                    System.out.println("When do you want to check in? Please enter a date in this format: year-month-day");
+                    System.out.println("Please remember, at the moment the hotels are only bookable between 220601 - 220731");
                     check_In = scanner.nextLine();
-                    System.out.println("When do you want to check out? Please enter a date in this format year-month-day");
+                    System.out.println("When do you want to check out? Please enter a date in this format: year-month-day");
                     check_Out = scanner.nextLine();
-                    ds.getFreeRooms(check_Out, check_In, bookHotel_ID, bookRoomSize);
-                    System.out.println("Do you want to book the room? Press 1 or yes, 2 to go back to main menu");
-                    reservationChoice = Integer.parseInt(scanner.nextLine());
 
+
+
+                    ds.getFreeRooms(check_Out, check_In, bookHotel_ID, bookRoomSize);
+
+                    if (ds.getCounter() == 0) {
+                        System.out.println("No rooms available, do a new search");
+                        searchFreeRoomsAndBook();
+
+                    }
+                    else {
+
+                        System.out.println("Do you want to book the room? Press 1 for yes, 2 to go back to main menu");
+                        reservationChoice = Integer.parseInt(scanner.nextLine());
+                    }
                     if (reservationChoice == 1) {
 
-                        int guestID = 51;
-                        int roomNumber = 1108;
 
-                        return ds.createReservation(new Reservation(check_In, check_Out, bookRoomSize, bookHotel_ID, guestID, roomNumber));
+                        System.out.println("Room booked with reservation id  = " + bookRoom(check_In, check_Out, bookRoomSize, bookHotel_ID));
+                        System.out.println("Do you want to add a guest to the reservation?");
+                        reservationChoice = Integer.parseInt(scanner.nextLine());
+
+                        if (reservationChoice == 1) {
+                            addPeopleToReservation();
+
+                        }
+                        else if (reservationChoice == 2) {
+                            mainMenu();
+                        }
 
                     }
 
 
 
                     break;
-
-
-
-
             }
 
+    }
 
+        public int bookRoom(String check_In, String check_Out, int bookRoomSize, int bookHotel_ID) {
 
+            System.out.println("Which room number do you choose?");
+            int room_Number = Integer.parseInt(scanner.nextLine());
 
+            return ds.createReservation(new Reservation(check_In, check_Out, bookRoomSize, bookHotel_ID, room_Number));
 
-
-        }
-
-            return 1;
 
     }
 

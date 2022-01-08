@@ -4,11 +4,14 @@ import java.util.ArrayList;
 
 public class DataSource {
 
-    int counter = 0;
+    private int counter;
 
     private Connection conn = null;
 
     public DataSource() {
+
+        this.counter = counter;
+
         try {
             conn = DriverManager.getConnection("jdbc:sqlite:booking.db");
         } catch (SQLException throwables) {
@@ -225,7 +228,7 @@ public class DataSource {
             preparedStatement.setString(2, check_Out);
             preparedStatement.setInt(3, bookHotel_ID);
             preparedStatement.setInt(4, bookRoomSize);
-         //   preparedStatement.setInt(2, bookHotel_ID);
+
 
 
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -237,9 +240,8 @@ public class DataSource {
                 System.out.println(room_location_Room_Number);
 
             }
-            if (counter == 0) {
-                System.out.println("No free rooms");
-            }
+
+
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -252,8 +254,9 @@ public class DataSource {
     public int createReservation(Reservation reservation) {
 
         int incrementID = 0;
-        String query = "INSERT INTO reservation (Check_In, Check_Out, Room_ID, Hotel_ID, Guest_ID, Room_Number)\n" +
-                "VALUES (?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO reservation (Check_In, Check_Out, Room_ID, Hotel_ID, " +
+                "Room_Number)\n" +
+                "VALUES (?, ?, ?, ?, ?)";
 
 
         try {
@@ -262,8 +265,7 @@ public class DataSource {
             preparedStatement.setString(2,reservation.getCheck_Out());
             preparedStatement.setInt(3, reservation.getRoom_ID());
             preparedStatement.setInt(4, reservation.getHotel_ID());
-            preparedStatement.setInt(5, reservation.getGuest_ID());
-            preparedStatement.setInt(6, reservation.getRoom_Number());
+            preparedStatement.setInt(5, reservation.getRoom_Number());
 
 
             preparedStatement.executeUpdate();
@@ -280,8 +282,12 @@ public class DataSource {
 
     }
 
-
-
+      public int getCounter() {
+        return this.counter;
+      }
+      public void setCounter(int counter) {
+        this.counter = counter;
+      }
 
 }
 
