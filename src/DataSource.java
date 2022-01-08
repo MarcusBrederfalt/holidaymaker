@@ -119,18 +119,18 @@ public class DataSource {
 
             while (resultSet.next()) {
 
-                    counter ++;
+                counter++;
 
-                    String hotel_facilities_Name = resultSet.getString("Hotel_Facitilies_Name");
-                    String facility_Name = resultSet.getString("Facility_Name");
-                    String hotelName = resultSet.getString("Hotel_Name");
-                    int hotel_ID = resultSet.getInt("Hotel_ID");
-                    System.out.println("Facility name: " + facility_Name + "  " + "Type of facility: " + hotel_facilities_Name + " Belong to hotel: " + hotelName + hotel_ID);
+                String hotel_facilities_Name = resultSet.getString("Hotel_Facitilies_Name");
+                String facility_Name = resultSet.getString("Facility_Name");
+                String hotelName = resultSet.getString("Hotel_Name");
+                int hotel_ID = resultSet.getInt("Hotel_ID");
+                System.out.println("Facility name: " + facility_Name + "  " + "Type of facility: " + hotel_facilities_Name + " Belong to hotel: " + hotelName + hotel_ID);
 
-                }
-                if (counter == 0) {
-                    System.out.println("The hotel dont have any facilites");
-                }
+            }
+            if (counter == 0) {
+                System.out.println("The hotel dont have any facilites");
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -163,7 +163,7 @@ public class DataSource {
         return reservations;
     }
 
-    public void addGuestToReservation (int addReservation_ID, int addGuestID) {
+    public void addGuestToReservation(int addReservation_ID, int addGuestID) {
 
         String query = "UPDATE guest SET Reservation_ID = ? WHERE Guest_ID = ?";
 
@@ -175,9 +175,7 @@ public class DataSource {
             statement.setInt(2, addGuestID);
 
             statement.executeUpdate();
-        }
-
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -213,7 +211,42 @@ public class DataSource {
         return guests;
     }
 
-}
+    public void getFreeRooms(int bookHotel_ID) {
+
+
+        String query = "SELECT room_location.room_Number FROM room_location " +
+                "LEFT JOIN reservation ON room_location.Room_Number = reservation.Room_Number AND " +
+                "reservation.Check_Out >= '2022-06-25' AND reservation.Check_In <= '2022-07-18' WHERE room_location.Hotel_ID = ? AND room_location.Room_ID = 3 and reservation.Reservation_ID IS NULL";
+
+
+        try {
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setInt(1, bookHotel_ID);
+
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                counter ++;
+
+                String room_location_Room_Number = resultSet.getString("Room_Number");
+                System.out.println(room_location_Room_Number);
+
+            }
+            if (counter == 0) {
+                System.out.println("No free rooms");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+    }
+
+
+
+    }
 
 
 

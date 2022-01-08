@@ -31,7 +31,8 @@ public class Menu {
             System.out.println();
             System.out.println("1. Create a guest");
             System.out.println("2. Show all guests");
-            System.out.println("3. Add guests to a reservation");
+            System.out.println("3. Make a reservation");
+       //     System.out.println("3. Add guests to a reservation");
             System.out.println("4. Show guests in a reservation");
             System.out.println("5. Get a list of all the hotels");
             System.out.println("6. Show facilities connected to hotels");
@@ -63,22 +64,29 @@ public class Menu {
                     break;
 
                 case 3:
-                    addPeopleToReservation();
+                    searchFreeRoomsAndBook();
                     break;
+
+         //       case 3:
+           //         addPeopleToReservation();
+           //         break;
 
                 case 4:
                     showGuestsByReservation();
                     break;
 
                 case 5:
-                   showAllHotels();
-                   break;
+                    showAllHotels();
+                    break;
 
                 case 6:
                     ds.getAllFacilitys(3);
                     break;
 
                 case 7:
+
+                    break;
+                case 8:
                     System.out.println("Welcome back, exiting the program");
                     runMenu = false;
             }
@@ -87,6 +95,40 @@ public class Menu {
         }
 
     }
+
+    private void makeReservationMenu() {
+
+        System.out.println("1. List all hotels");
+        System.out.println("2. List facilitys connected to hotels");
+        System.out.println("3. Search for free rooms");
+
+        int reservationOption = Integer.parseInt(scanner.nextLine());
+
+        boolean runReservation = true;
+
+        while(runReservation);
+
+        switch(reservationOption) {
+            case 1:
+                showAllHotels();
+                break;
+
+            case 2:
+                ds.getAllFacilitys(3);
+                break;
+            case 3:
+                searchFreeRoomsAndBook();
+                break;
+            default:
+                break;
+
+        }
+
+
+    }
+
+
+
 
     private void showAllGuest() {
         ArrayList<Guest> guests = ds.getAllGuests();
@@ -127,7 +169,7 @@ public class Menu {
 
     }
 
-    public void addPeopleToReservation () {
+    public void addPeopleToReservation() {
         System.out.println("Which reservation do you want to add to?");
         int reservationID = Integer.parseInt(scanner.nextLine());
         System.out.println("Which guest do you want to include in the reservation?");
@@ -149,11 +191,24 @@ public class Menu {
 
     }
 
-    public void get_facilitiesByHotels() {
+    public void searchFreeRoomsAndBook() {
 
+        System.out.println("Which Hotel do you want to book? Please enter Hotel ID");
+        int bookHotel_ID = Integer.parseInt(scanner.nextLine());
+        ds.getFreeRooms(bookHotel_ID);
+
+       System.out.println("Which room size do you want to search for? Press 1 for Single room" +
+                "2 for a double room and 3 for a suite");
+       int bookRoomSize = Integer.parseInt(scanner.nextLine());
+       System.out.println("When do you want to check in? Please enter a date in this format year-month-day");
+       String check_In = scanner.nextLine();
+       System.out.println("When do you want to check out? Please enter a date in this format year-month-day");
+       String check_Out = scanner.nextLine();
 
     }
 
-    }
+
+
+}
 
 

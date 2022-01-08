@@ -26,6 +26,12 @@ public class Hotel {
         this.hotel_Zip_Code = hotel_Zip_Code;
     }
 
+    public Hotel (String hotel_Name) {
+
+            this.hotel_Name = hotel_Name;
+
+    }
+
 
     public String getHotel_Name() {
         return hotel_Name;
