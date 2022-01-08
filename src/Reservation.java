@@ -24,6 +24,20 @@ public class Reservation {
         this.reservation_ID = reservation_ID;
     }
 
+    public Reservation(String check_In, String check_Out, int room_ID, int hotel_ID, int guest_ID, int room_Number) {
+
+        this.check_In = check_In;
+        this.check_Out = check_Out;
+        this.room_ID = room_ID;
+        this.hotel_ID = hotel_ID;
+        this.guest_ID = guest_ID;
+        this.room_Number = room_Number;
+
+    }
+
+
+
+
     public int getReservation_ID() {
         return reservation_ID;
     }

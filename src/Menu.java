@@ -191,23 +191,69 @@ public class Menu {
 
     }
 
-    public void searchFreeRoomsAndBook() {
+    public int searchFreeRoomsAndBook() {
 
-        System.out.println("Which Hotel do you want to book? Please enter Hotel ID");
-        int bookHotel_ID = Integer.parseInt(scanner.nextLine());
-        ds.getFreeRooms(bookHotel_ID);
+        boolean runReservation = true;
+        int bookHotel_ID;
+        int bookRoomSize;
+        String check_In;
+        String check_Out;
 
-       System.out.println("Which room size do you want to search for? Press 1 for Single room" +
-                "2 for a double room and 3 for a suite");
-       int bookRoomSize = Integer.parseInt(scanner.nextLine());
-       System.out.println("When do you want to check in? Please enter a date in this format year-month-day");
-       String check_In = scanner.nextLine();
-       System.out.println("When do you want to check out? Please enter a date in this format year-month-day");
-       String check_Out = scanner.nextLine();
+
+        while (runReservation) {
+
+            System.out.println("1. Search for availible rooms");
+            System.out.println("2. Book a room");
+
+
+            int reservationChoice = Integer.parseInt(scanner.nextLine());
+
+            switch (reservationChoice) {
+
+                case 1:
+                    System.out.println("Which Hotel do you want to book? Please enter Hotel ID");
+                    bookHotel_ID = Integer.parseInt(scanner.nextLine());
+
+
+                    System.out.println("Which room size do you want to search for? Press 1 for Single room" +
+                            "2 for a double room and 3 for a suite");
+                    bookRoomSize = Integer.parseInt(scanner.nextLine());
+                    System.out.println("When do you want to check in? Please enter a date in this format year-month-day");
+                    check_In = scanner.nextLine();
+                    System.out.println("When do you want to check out? Please enter a date in this format year-month-day");
+                    check_Out = scanner.nextLine();
+                    ds.getFreeRooms(check_Out, check_In, bookHotel_ID, bookRoomSize);
+                    System.out.println("Do you want to book the room? Press 1 or yes, 2 to go back to main menu");
+                    reservationChoice = Integer.parseInt(scanner.nextLine());
+
+                    if (reservationChoice == 1) {
+
+                        int guestID = 51;
+                        int roomNumber = 1108;
+
+                        return ds.createReservation(new Reservation(check_In, check_Out, bookRoomSize, bookHotel_ID, guestID, roomNumber));
+
+                    }
+
+
+
+                    break;
+
+
+
+
+            }
+
+
+
+
+
+
+        }
+
+            return 1;
 
     }
-
-
 
 }
 

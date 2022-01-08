@@ -211,17 +211,21 @@ public class DataSource {
         return guests;
     }
 
-    public void getFreeRooms(int bookHotel_ID) {
+    public void getFreeRooms(String check_Out, String check_In, int bookHotel_ID, int bookRoomSize) {
 
 
         String query = "SELECT room_location.room_Number FROM room_location " +
                 "LEFT JOIN reservation ON room_location.Room_Number = reservation.Room_Number AND " +
-                "reservation.Check_Out >= '2022-06-25' AND reservation.Check_In <= '2022-07-18' WHERE room_location.Hotel_ID = ? AND room_location.Room_ID = 3 and reservation.Reservation_ID IS NULL";
+                "reservation.Check_Out >= ? AND reservation.Check_In <= ? WHERE room_location.Hotel_ID = ? AND room_location.Room_ID = ? and reservation.Reservation_ID IS NULL";
 
 
         try {
             PreparedStatement preparedStatement = conn.prepareStatement(query);
-            preparedStatement.setInt(1, bookHotel_ID);
+            preparedStatement.setString(1, check_In);
+            preparedStatement.setString(2, check_Out);
+            preparedStatement.setInt(3, bookHotel_ID);
+            preparedStatement.setInt(4, bookRoomSize);
+         //   preparedStatement.setInt(2, bookHotel_ID);
 
 
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -245,8 +249,41 @@ public class DataSource {
     }
 
 
+    public int createReservation(Reservation reservation) {
+
+        int incrementID = 0;
+        String query = "INSERT INTO reservation (Check_In, Check_Out, Room_ID, Hotel_ID, Guest_ID, Room_Number)\n" +
+                "VALUES (?, ?, ?, ?, ?, ?)";
+
+
+        try {
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setString(1, reservation.getCheck_In());
+            preparedStatement.setString(2,reservation.getCheck_Out());
+            preparedStatement.setInt(3, reservation.getRoom_ID());
+            preparedStatement.setInt(4, reservation.getHotel_ID());
+            preparedStatement.setInt(5, reservation.getGuest_ID());
+            preparedStatement.setInt(6, reservation.getRoom_Number());
+
+
+            preparedStatement.executeUpdate();
+            ResultSet generatedkeys = preparedStatement.getGeneratedKeys();
+
+            while (generatedkeys.next()) {
+                incrementID = generatedkeys.getInt(1);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return incrementID;
 
     }
+
+
+
+
+}
 
 
 
