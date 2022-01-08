@@ -32,11 +32,12 @@ public class Menu {
             System.out.println("1. Create a guest");
             System.out.println("2. Show all guests");
             System.out.println("3. Make a reservation");
-       //     System.out.println("3. Add guests to a reservation");
-            System.out.println("4. Show guests in a reservation");
-            System.out.println("5. Get a list of all the hotels");
-            System.out.println("6. Show facilities connected to hotels");
-            System.out.println("7. Exit program");
+            System.out.println("4. Add guests to a reservation");
+            System.out.println("5. Show guests in a reservation");
+            System.out.println("6. Cancel reservation");
+            System.out.println("7. Get a list of all the hotels");
+            System.out.println("8. Show facilities connected to hotels");
+            System.out.println("9. Exit program");
 
 
             choice = Integer.parseInt(scanner.nextLine());
@@ -67,25 +68,29 @@ public class Menu {
                     searchFreeRoomsAndBook();
                     break;
 
-         //       case 3:
-           //         addPeopleToReservation();
-           //         break;
-
                 case 4:
-                    showGuestsByReservation();
+                    addPeopleToReservation();
                     break;
 
                 case 5:
-                    showAllHotels();
+                    showGuestsByReservation();
                     break;
 
                 case 6:
-                    ds.getAllFacilitys(3);
+                    cancelReservation();
                     break;
 
                 case 7:
+                    showAllHotels();
                     break;
+
                 case 8:
+                    ds.getAllFacilitys(3);
+                    break;
+
+                case 9:
+                    break;
+                case 10:
                     System.out.println("Welcome back, exiting the program");
                     runMenu = false;
             }
@@ -175,6 +180,14 @@ public class Menu {
         int addGuestID = Integer.parseInt(scanner.nextLine());
         ds.addGuestToReservation(reservationID, addGuestID);
     }
+
+    public void cancelReservation() {
+        System.out.println("Which reservation do you want to cancel?");
+        int reservationID = Integer.parseInt(scanner.nextLine());
+        ds.cancelReservation(reservationID);
+    }
+
+
 
 
     public void showGuestsByReservation() {

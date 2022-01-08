@@ -184,6 +184,26 @@ public class DataSource {
 
     }
 
+    public void cancelReservation(int addReservation_ID) {
+
+        String query = "UPDATE reservation SET Check_In = NULL, Check_Out = NULL, Room_ID = NULL, Hotel_ID = NULL, Number_Of_Guests = NULL" +
+                ", Guest_ID = NULL, Room_Number = NULL WHERE Reservation_ID = ?";
+
+
+        try {
+            PreparedStatement statement = conn.prepareStatement(query);
+
+            statement.setInt(1, addReservation_ID);
+
+            statement.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+
+    }
+
     public ArrayList<Guest> getGuestByReservation(int reservation_ID) {
 
         ArrayList<Guest> guests = new ArrayList<>();

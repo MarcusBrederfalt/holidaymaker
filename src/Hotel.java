@@ -99,7 +99,7 @@ public class Hotel {
 
 
     public String toString() {
-        return "Name: " + hotel_Name + " " + "Hotel_ID: " + hotel_ID + " " + " Hotel Adress: " + hotel_Address;
+        return "Name: " + hotel_Name + "   " + "Hotel ID: " + hotel_ID + "   " + " Hotel Adress: " + hotel_Address + " City  " + hotel_City + "  Country " + hotel_Country;
     }
 
 //    @Override
