@@ -30,12 +30,11 @@ public class Menu {
             System.out.println("Main Menu");
             System.out.println();
             System.out.println("1. Create a guest");
-            System.out.println("2. Show all guests");
-            System.out.println("3. Make a reservation");
+            System.out.println("2. Search for a guest");
+            System.out.println("3. Make a reservation / see hotel");
             System.out.println("4. Add guests to a reservation");
             System.out.println("5. Show guests in a reservation");
             System.out.println("6. Cancel reservation");
-            System.out.println("7. Get a list of all the hotels");
             System.out.println("8. Show facilities connected to hotels");
             System.out.println("9. Exit program");
 
@@ -61,7 +60,7 @@ public class Menu {
                     break;
 
                 case 2:
-                    showAllGuest();
+                    //search for a guest
                     break;
 
                 case 3:

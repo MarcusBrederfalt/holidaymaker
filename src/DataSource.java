@@ -1,3 +1,10 @@
+/**
+ *  DataSource class
+ *  Here the connection to the database is estabhlised in the constructor.
+ *  This class does all the communication with the database
+ */
+
+
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -10,8 +17,11 @@ public class DataSource {
 
     public DataSource() {
 
+        // counter to have track on how many rows of data the database returns
         this.counter = counter;
 
+
+        // in this case the database is namned booking.db
         try {
             conn = DriverManager.getConnection("jdbc:sqlite:booking.db");
         } catch (SQLException throwables) {
