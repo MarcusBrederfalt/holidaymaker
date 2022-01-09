@@ -11,14 +11,13 @@ import java.util.ArrayList;
 
 public class DataSource {
 
-    private int counter;
+
 
     private Connection conn = null;
 
     public DataSource() {
 
-        // counter to have track on how many rows of data the database returns
-        this.counter = counter;
+
 
 
         // in this case the database is namned booking.db
@@ -117,6 +116,7 @@ public class DataSource {
     }
 
     public void getAllFacilitys(int Hotel_ID) {
+        int counter = 0;
 
 
         String query = "SELECT hotel_facilities.Hotel_Facitilies_Name, " +
@@ -132,7 +132,7 @@ public class DataSource {
 
             while (resultSet.next()) {
 
-                counter++;
+                counter ++;
 
                 String hotel_facilities_Name = resultSet.getString("Hotel_Facitilies_Name");
                 String facility_Name = resultSet.getString("Facility_Name");
@@ -194,6 +194,29 @@ public class DataSource {
 
     }
 
+    public void insertGuestToReservation(int addGuestID, int addReservation_ID) {
+
+        String query = "UPDATE reservation SET Guest_ID = ? WHERE Reservation_ID = ?";
+
+
+        try {
+            PreparedStatement statement = conn.prepareStatement(query);
+
+            statement.setInt(1, addGuestID);
+            statement.setInt(2, addReservation_ID);
+
+            statement.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+
+
+
+
+
     public void cancelReservation(int addReservation_ID) {
 
         String query = "UPDATE reservation SET Check_In = NULL, Check_Out = NULL, Room_ID = NULL, Hotel_ID = NULL, Number_Of_Guests = NULL" +
@@ -244,41 +267,6 @@ public class DataSource {
         return guests;
     }
 
-    public void getFreeRooms(String check_Out, String check_In, int bookHotel_ID, int bookRoomSize) {
-
-
-        String query = "SELECT room_location.room_Number FROM room_location " +
-                "LEFT JOIN reservation ON room_location.Room_Number = reservation.Room_Number AND " +
-                "reservation.Check_Out >= ? AND reservation.Check_In <= ? WHERE room_location.Hotel_ID = ? AND room_location.Room_ID = ? and reservation.Reservation_ID IS NULL";
-
-
-        try {
-            PreparedStatement preparedStatement = conn.prepareStatement(query);
-            preparedStatement.setString(1, check_In);
-            preparedStatement.setString(2, check_Out);
-            preparedStatement.setInt(3, bookHotel_ID);
-            preparedStatement.setInt(4, bookRoomSize);
-
-
-
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()) {
-                counter ++;
-
-                String room_location_Room_Number = resultSet.getString("Room_Number");
-                System.out.println(room_location_Room_Number);
-
-            }
-
-
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-
-    }
 
 
     public int createReservation(Reservation reservation) {
@@ -312,14 +300,83 @@ public class DataSource {
 
     }
 
-      public int getCounter() {
-        return this.counter;
-      }
-      public void setCounter(int counter) {
-        this.counter = counter;
-      }
+
+    public ArrayList<Room_Location> getFreeRooms(String check_Out, String check_In, int bookHotel_ID, int bookRoomSize) {
+
+        ArrayList<Room_Location> freeRooms = new ArrayList<>();
+
+
+        String query = "SELECT room_location.room_Number FROM room_location " +
+                "LEFT JOIN reservation ON room_location.Room_Number = reservation.Room_Number AND " +
+                "reservation.Check_Out >= ? AND reservation.Check_In <= ? WHERE room_location.Hotel_ID = ? AND room_location.Room_ID = ? and reservation.Reservation_ID IS NULL";
+
+
+        try {
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setString(1, check_In);
+            preparedStatement.setString(2, check_Out);
+            preparedStatement.setInt(3, bookHotel_ID);
+            preparedStatement.setInt(4, bookRoomSize);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+
+
+                int room_Number = resultSet.getInt("Room_Number");
+                freeRooms.add(new Room_Location(room_Number));
+
+            }
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return freeRooms;
+    }
+
+    public ArrayList<Guest> getGuestByLastName(String inputLastName) {
+
+        ArrayList<Guest> guests = new ArrayList<>();
+
+        String query = "SELECT * FROM guest WHERE Last_Name LIKE ? ";
+
+        try {
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setString(1, inputLastName);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+
+            while (resultSet.next()) {
+                String firstName = resultSet.getString("First_Name");
+                String lastName = resultSet.getString("Last_Name");
+                String phoneNumber = resultSet.getString("Phone_Number");
+                String emailAdress = resultSet.getString("Email_Adress");
+                String dateOfBirth = resultSet.getString("Date_Of_Birth");
+                int guestID = resultSet.getInt("Guest_ID");
+                int reservationID = resultSet.getInt("Reservation_ID");
+
+
+                guests.add(new Guest(firstName, lastName, phoneNumber, emailAdress, dateOfBirth, guestID, reservationID));
+
+            }
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return guests;
+    }
+
+
+
 
 }
+
+
+
+
 
 
 

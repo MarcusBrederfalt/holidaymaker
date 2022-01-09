@@ -91,7 +91,7 @@ public class Guest {
 
     @Override
     public String toString() {
-        return first_Name + " " + last_Name + " " + phoneNumber + " " + email_Adress + " " + date_Of_Birth +
-                " " + guest_ID + " " + reservation_ID ;
+        return "First name: " + first_Name + " " + "Last name: " + last_Name + " " + "Phone number: " + phoneNumber + " " + "Email adress: " + email_Adress + " " + "Date of birth: "+ date_Of_Birth +
+                " " + "Guest ID: " + guest_ID + " " + "Reservation ID: " + reservation_ID ;
     }
 }

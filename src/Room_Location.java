@@ -10,6 +10,10 @@ public class Room_Location {
         this.room_Number = room_Number;
     }
 
+    public Room_Location(int room_Number) {
+        this.room_Number = room_Number;
+    }
+
     public int getRoom_ID() {
         return room_ID;
     }
@@ -36,10 +40,6 @@ public class Room_Location {
 
     @Override
     public String toString() {
-        return "Room_Location{" +
-                "room_ID=" + room_ID +
-                ", hotel_ID=" + hotel_ID +
-                ", room_Number=" + room_Number +
-                '}';
+    return "Room number " + room_Number;
     }
 }
