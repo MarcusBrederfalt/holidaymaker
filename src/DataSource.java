@@ -42,10 +42,11 @@ public class DataSource {
                 String dateOfBirth = resultSet.getString("Date_Of_Birth");
                 int guestID = resultSet.getInt("Guest_ID");
                 int reservationID = resultSet.getInt("Reservation_ID");
+                int company_ID = resultSet.getInt("Company_ID");
 
 
                 guests.add(new Guest(firstName, lastName, phoneNumber, emailAdress, dateOfBirth, guestID,
-                        reservationID));
+                        reservationID, company_ID));
 
             }
 
@@ -190,6 +191,25 @@ public class DataSource {
         }
 
     }
+
+    public void addGuestToCompany(int addCompany_ID, int addGuestID) {
+
+        String query = "UPDATE guest SET Company_ID = ? WHERE Guest_ID = ?";
+
+
+        try {
+            PreparedStatement statement = conn.prepareStatement(query);
+
+            statement.setInt(1, addCompany_ID);
+            statement.setInt(2, addGuestID);
+
+            statement.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
 
     public void insertGuestToReservation(int addGuestID, int addReservation_ID) {
 
@@ -347,9 +367,10 @@ public class DataSource {
                 String dateOfBirth = resultSet.getString("Date_Of_Birth");
                 int guestID = resultSet.getInt("Guest_ID");
                 int reservationID = resultSet.getInt("Reservation_ID");
+                int company_ID = resultSet.getInt("Company_ID");
 
 
-                guests.add(new Guest(firstName, lastName, phoneNumber, emailAdress, dateOfBirth, guestID, reservationID));
+                guests.add(new Guest(firstName, lastName, phoneNumber, emailAdress, dateOfBirth, guestID, reservationID, company_ID));
 
             }
 
@@ -409,15 +430,106 @@ public class DataSource {
             }
 
 
-
-
         } catch (Exception e) {
             e.printStackTrace();
 
         }
     }
-}
 
+    public void getCompanyID() {
+
+        String query = "SELECT Company_ID FROM guest WHERE Company_ID IS NOT NULL";
+
+        try {
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+
+            while (resultSet.next()) {
+                int company_ID = resultSet.getInt("Company_ID");
+
+
+                System.out.println(company_ID);
+            }
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public ArrayList<Room_Location> getFreeRooms2(String check_Out, String check_In, int bookHotel_ID, int companyAmount) {
+
+        ArrayList<Room_Location> freeRooms = new ArrayList<>();
+
+
+        String query = "SELECT room_location.room_Number FROM room_location  LEFT JOIN reservation ON room_location.Room_Number = reservation.Room_Number AND reservation.Check_Out >= ? AND " +
+                "reservation.Check_In <= ? WHERE room_location.Hotel_ID = ? and reservation.Reservation_ID IS NULL AND (SELECT room.Room_Capacity FROM room WHERE room_location.Room_ID = " +
+                "room.Room_ID AND room.Room_Capacity >= ?)";
+
+        //   String query2 = "SELECT room_location.room_Number FROM room_location " +
+        //         "LEFT JOIN reservation ON room_location.Room_Number = reservation.Room_Number AND " +
+        //       "reservation.Check_Out >= ? AND reservation.Check_In <= ? WHERE room_location.Hotel_ID = ? AND room_location.Room_ID = ? and reservation.Reservation_ID IS NULL";
+
+
+        try {
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setString(1, check_In);
+            preparedStatement.setString(2, check_Out);
+            preparedStatement.setInt(3, bookHotel_ID);
+            preparedStatement.setInt(4, companyAmount);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+
+
+                int room_Number = resultSet.getInt("Room_Number");
+                freeRooms.add(new Room_Location(room_Number));
+
+            }
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return freeRooms;
+    }
+
+
+    public ArrayList<Guest> getGuestByCompany_ID(int company_ID) {
+
+        ArrayList<Guest> guests = new ArrayList<>();
+        String query = "SELECT First_Name, Last_Name, Phone_Number, Email_Adress, Date_Of_Birth FROM guest WHERE Reservation_ID = ?";
+
+        try {
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setInt(1, company_ID);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+
+            while (resultSet.next()) {
+                String firstName = resultSet.getString("First_Name");
+                String lastName = resultSet.getString("Last_Name");
+                String phoneNumber = resultSet.getString("Phone_Number");
+                String emailAdress = resultSet.getString("Email_Adress");
+                String dateOfBirth = resultSet.getString("Date_Of_Birth");
+
+
+                guests.add(new Guest(firstName, lastName, phoneNumber, emailAdress, dateOfBirth));
+
+            }
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return guests;
+
+
+    }
+}
 
 
 
