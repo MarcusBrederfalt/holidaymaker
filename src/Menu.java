@@ -47,12 +47,12 @@ public class Menu {
                 case 1:
                     System.out.println("Guest created with ID = " + createGuest());
 
-                    System.out.println("Do you want to add another guest? Y/N?");
-                    String selection = scanner.nextLine();
+                    System.out.println("Do you want to add another guest? Press 1 for yes, 2 for no");
+                    int selection = Integer.parseInt(scanner.nextLine());
 
-                    if (selection == "Y" || selection == "y") {
+                    if (selection == 1) {
                         createGuest();
-                    } else if (selection == "N" || selection == "n") {
+                    } else if (selection >= 2) {
                         System.out.println("Going back to main menu");
                         Output.threadSleep();
                         Output.emptyScreen();
@@ -76,10 +76,17 @@ public class Menu {
 
                 case 5:
                     showGuestsByReservation();
+                    System.out.println("Going back to main menu");
+                    Output.threadSleep();
+                    Output.emptyScreen();
                     break;
 
                 case 6:
                     cancelReservation();
+                    System.out.println("Reservation cancelled");
+                    System.out.println("Going back to main menu");
+                    Output.threadSleep();
+                    Output.emptyScreen();
                     break;
 
                 case 7:
@@ -341,11 +348,17 @@ public class Menu {
                         addFacility();
 
                     } else if (choice == 2) {
-                        addFacility();
+                        Output.threadSleep();
+                        Output.emptyScreen();
+                        mainMenu();
                         break;
-
-
                     }
+                case 2:
+                    addFacility();
+                    break;
+
+                default:
+                    break;
 
             }
         }
