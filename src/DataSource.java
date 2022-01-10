@@ -369,10 +369,42 @@ public class DataSource {
         return guests;
     }
 
+    public int createFacility(Facility newFacility) {
+
+        int incrementID = 0;
+        String query = "INSERT INTO facility (Hotel_Facilities_ID, Facility_Name, Hotel_ID) VALUES (?, ?, ?)";
+
+
+        try {
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setInt(1, newFacility.getHotel_ID());
+            preparedStatement.setString(2, newFacility.getFacility_Name());
+            preparedStatement.setInt(3, newFacility.getHotel_Facilities_ID());
+
+
+            preparedStatement.executeUpdate();
+            ResultSet generatedkeys = preparedStatement.getGeneratedKeys();
+
+            while (generatedkeys.next()) {
+                incrementID = generatedkeys.getInt(1);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return incrementID;
+
+    }
 
 
 
-}
+
+    }
+
+
+
+
+
 
 
 

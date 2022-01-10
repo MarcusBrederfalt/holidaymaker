@@ -31,11 +31,11 @@ public class Menu {
             System.out.println();
             System.out.println("1. Create a guest");
             System.out.println("2. Search for a guest by last name");
-            System.out.println("3. Make a reservation / see hotel");
+            System.out.println("3. Make a reservation");
             System.out.println("4. Add guests to a reservation");
             System.out.println("5. Show guests in a reservation");
             System.out.println("6. Cancel reservation");
-            System.out.println("8. Show facilities connected to hotels");
+            System.out.println("8. Manage facilities connected to hotels");
             System.out.println("9. Exit program");
 
 
@@ -87,7 +87,7 @@ public class Menu {
                     break;
 
                 case 8:
-                    ds.getAllFacilitys(1);
+                    manageFacilities();
                     break;
 
                 case 9:
@@ -137,9 +137,9 @@ public class Menu {
         for (Hotel hotel : hotels) {
             System.out.println(hotel);
         }
-        Output.pause();
 
-        Output.emptyScreen();
+
+
 
     }
 
@@ -316,8 +316,68 @@ public class Menu {
 
         }
 
-    }
+        public void manageFacilities() {
+
+            System.out.println("Manage facilities");
+            System.out.println("1. List facilities connected to hotels");
+            System.out.println("2. Add facility to hotel");
+
+
+            boolean runManageFacilities = true;
+            choice = Integer.parseInt(scanner.nextLine());
+
+            switch (choice) {
+
+                case 1:
+                    System.out.println("Here is a list of the hotels: ");
+                    showAllHotels();
+                    System.out.println();
+                    System.out.println("Please enter a hotel id to see facilities");
+                    int hotel_ID = Integer.parseInt(scanner.nextLine());
+                    ds.getAllFacilitys(hotel_ID);
+                    System.out.println("Press 1 to add a facility or press 2 to go back to main menu");
+                    choice = Integer.parseInt(scanner.nextLine());
+                    if (choice == 1) {
+                        addFacility();
+
+                    } else if (choice == 2) {
+                        addFacility();
+                        break;
+
+
+                    }
+
+            }
+        }
+            private int addFacility () {
+
+                System.out.println("Please enter the hotel ID");
+                int hotel_ID = Integer.parseInt(scanner.nextLine());
+
+                System.out.println("The name of the facility");
+                String facilityName = scanner.nextLine();
+
+                System.out.println("What type of facility is it?");
+                System.out.println("Press 1 for pool, 2 for evening entertainment, 3 for restaurant or 4 for childrens club");
+
+                int facilityID = Integer.parseInt(scanner.nextLine());
+                System.out.println("Facility added!");
+                System.out.println("Going back to Main menu");
+                Output.threadSleep();
+                Output.emptyScreen();
+
+
+                return ds.createFacility(new Facility(hotel_ID, facilityName, facilityID));
 
 
 
+
+
+            }
+
+
+
+
+
+        }
 
