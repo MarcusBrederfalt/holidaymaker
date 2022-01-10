@@ -12,12 +12,9 @@ import java.util.ArrayList;
 public class DataSource {
 
 
-
     private Connection conn = null;
 
     public DataSource() {
-
-
 
 
         // in this case the database is namned booking.db
@@ -132,7 +129,7 @@ public class DataSource {
 
             while (resultSet.next()) {
 
-                counter ++;
+                counter++;
 
                 String hotel_facilities_Name = resultSet.getString("Hotel_Facitilies_Name");
                 String facility_Name = resultSet.getString("Facility_Name");
@@ -213,10 +210,6 @@ public class DataSource {
     }
 
 
-
-
-
-
     public void cancelReservation(int addReservation_ID) {
 
         String query = "UPDATE reservation SET Check_In = NULL, Check_Out = NULL, Room_ID = NULL, Hotel_ID = NULL, Number_Of_Guests = NULL" +
@@ -232,7 +225,6 @@ public class DataSource {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
 
 
     }
@@ -268,7 +260,6 @@ public class DataSource {
     }
 
 
-
     public int createReservation(Reservation reservation) {
 
         int incrementID = 0;
@@ -280,7 +271,7 @@ public class DataSource {
         try {
             PreparedStatement preparedStatement = conn.prepareStatement(query);
             preparedStatement.setString(1, reservation.getCheck_In());
-            preparedStatement.setString(2,reservation.getCheck_Out());
+            preparedStatement.setString(2, reservation.getCheck_Out());
             preparedStatement.setInt(3, reservation.getRoom_ID());
             preparedStatement.setInt(4, reservation.getHotel_ID());
             preparedStatement.setInt(5, reservation.getRoom_Number());
@@ -396,10 +387,36 @@ public class DataSource {
 
     }
 
+    public void getGuestBy(int reservation_ID) {
+
+        String query = "SELECT First_Name, Last_Name, Phone_Number, Email_Adress, Date_Of_Birth FROM guest WHERE Reservation_ID = ?";
+
+        try {
+            PreparedStatement preparedStatement = conn.prepareStatement(query);
+            preparedStatement.setInt(1, reservation_ID);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            System.out.println("Guest in reservation with ID " + reservation_ID);
+
+            while (resultSet.next()) {
+                String firstName = resultSet.getString("First_Name");
+                String lastName = resultSet.getString("Last_Name");
+                String phoneNumber = resultSet.getString("Phone_Number");
+                String emailAdress = resultSet.getString("Email_Adress");
+                String dateOfBirth = resultSet.getString("Date_Of_Birth");
+
+                System.out.println("First name: " + firstName + " Last name: " + lastName + " Phone_Number: " + phoneNumber + " Email adress: " + emailAdress + " Date of birth: " + dateOfBirth);
+            }
 
 
 
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
     }
+}
 
 
 

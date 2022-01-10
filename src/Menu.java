@@ -35,8 +35,8 @@ public class Menu {
             System.out.println("4. Add guests to a reservation");
             System.out.println("5. Show guests in a reservation");
             System.out.println("6. Cancel reservation");
-            System.out.println("8. Manage facilities connected to hotels");
-            System.out.println("9. Exit program");
+            System.out.println("7. Manage facilities connected to hotels");
+            System.out.println("8. Exit program");
 
 
             choice = Integer.parseInt(scanner.nextLine());
@@ -75,9 +75,12 @@ public class Menu {
                     break;
 
                 case 5:
-                    showGuestsByReservation();
+
+                    System.out.println("Please enter a reservation ID");
+                    int reservationID = Integer.parseInt(scanner.nextLine());
+                    ds.getGuestBy(reservationID);
                     System.out.println("Going back to main menu");
-                    Output.threadSleep();
+                    Output.pause();
                     Output.emptyScreen();
                     break;
 
@@ -89,15 +92,13 @@ public class Menu {
                     Output.emptyScreen();
                     break;
 
-                case 7:
-                    showAllHotels();
-                    break;
 
-                case 8:
+
+                case 7:
                     manageFacilities();
                     break;
 
-                case 9:
+                case 8:
                     System.out.println("Welcome back, exiting the program");
                     runMenu = false;
                     break;
