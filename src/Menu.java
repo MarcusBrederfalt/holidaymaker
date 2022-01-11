@@ -1,4 +1,5 @@
 import java.lang.reflect.Array;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -18,7 +19,7 @@ public class Menu {
 
     }
 
-    public void mainMenu() {
+    private void mainMenu() {
 
         System.out.println("Welcome to the holiday booking system");
         System.out.println("");
@@ -51,6 +52,7 @@ public class Menu {
                     break;
 
                 case 2:
+
                     showGuestsByLastName();
                     break;
 
@@ -80,6 +82,9 @@ public class Menu {
                     runMenu = false;
                     break;
 
+                    default:
+                    break;
+
             }
 
 
@@ -107,7 +112,7 @@ public class Menu {
 
     }
 
-    public void addPeopleToReservation() {
+    private void addPeopleToReservation() {
         System.out.println("Which reservation do you want to add to?");
         int reservationID = Integer.parseInt(scanner.nextLine());
         System.out.println("Which guest do you want to include in the reservation?");
@@ -121,7 +126,7 @@ public class Menu {
 
     }
 
-    public void addGuestToCompany() {
+    private void addGuestToCompany() {
         System.out.println("Which company do you want to add to?");
         System.out.println("Press 1 to see a the next free company id or press 2 to continue to add");
         System.out.println("Press 3 to go back to main menu");
@@ -163,7 +168,7 @@ public class Menu {
     }
 
 
-    public void addGuestToReservation() {
+    private void addGuestToReservation() {
 
         System.out.println("Which reservation do you want to add the guest to?");
         int reservationID = Integer.parseInt(scanner.nextLine());
@@ -182,7 +187,7 @@ public class Menu {
 
     }
 
-    public void cancelReservation() {
+    private void cancelReservation() {
 
         System.out.println("Press 1 to cancel a reservation with reservation id");
         System.out.println("Press 2 to search for a reservation with guest last name");
@@ -224,7 +229,7 @@ public class Menu {
     }
 
 
-    public void showGuestsByReservation() {
+    private void showGuestsByReservation() {
 
         System.out.println("Please enter a reservation id");
         int reservation_ID;
@@ -237,9 +242,9 @@ public class Menu {
 
     }
 
-    public void showGuestsByLastName() {
+    private void showGuestsByLastName() {
 
-        System.out.println("Please enter a last name you want to search for");
+        System.out.println("Enter the last name you want to search for");
         String last_Name = scanner.nextLine();
 
         ArrayList<Guest> guests = ds.getGuestByLastName(last_Name);
@@ -255,12 +260,13 @@ public class Menu {
             System.out.println("Going back to main menu");
             Output.threadSleep();
             Output.emptyScreen();
+            mainMenu();
         }
 
     }
 
 
-    public int bookRoom(String check_In, String check_Out, int bookRoomSize, int bookHotel_ID) {
+    private int bookRoom(String check_In, String check_Out, int bookRoomSize, int bookHotel_ID) {
 
         System.out.println("Which room number do you choose?");
         int room_Number = Integer.parseInt(scanner.nextLine());
@@ -270,7 +276,7 @@ public class Menu {
 
     }
 
-    public void manageFacilities() {
+    private void manageFacilities() {
 
         boolean runManageFacilities = true;
         choice = Integer.parseInt(scanner.nextLine());
@@ -330,7 +336,7 @@ public class Menu {
     }
 
 
-    public void searchFreeRoomsAndFacilitys() {
+    private void searchFreeRoomsAndFacilitys() {
 
         boolean runReservation = true;
         int bookHotel_ID;
@@ -346,7 +352,7 @@ public class Menu {
 
             System.out.println("1. Search facilities belonging to a hotel");
             System.out.println("2. Add facilities to hotel");
-            System.out.println("3. Search for a company or single guest");
+            System.out.println("3. Search for guests in a company");
             System.out.println("4. Search for availible rooms and book them");
             choice = Integer.parseInt(scanner.nextLine());
 
@@ -408,7 +414,7 @@ public class Menu {
 
 
 
-    public void bookRoomHotel() {
+    private void bookRoomHotel() {
 
 
         int bookHotel_ID;
@@ -442,6 +448,8 @@ public class Menu {
 
         ArrayList<Room_Location> freeRoom = ds.getFreeRooms(check_Out, check_In, bookHotel_ID, companyAmount);
 
+        System.out.println("Here is a list of free rooms with capacity to house the company");
+
         for (Room_Location location : freeRoom) {
             System.out.println(location);
 
@@ -465,7 +473,7 @@ public class Menu {
 
                     System.out.println("Room booked with reservation id " + bookRoom(check_In, check_Out, bookHotel_ID, companyAmount));
                     System.out.println("Which guest will be the contact for the reservation?");
-                    System.out.println("Press 1 to add guest 2. Search for a guest by last name 3. See guests in company 4. Go back to main menu");
+                    System.out.println("Press 1 to add guest 2. Search for a guest by last name 3. Go back to main menu");
                     reservationChoice = Integer.parseInt(scanner.nextLine());
 
                     if (reservationChoice == 1) {
@@ -474,30 +482,20 @@ public class Menu {
 
 
                     } else if (reservationChoice == 2) {
-                        System.out.println("Please enter a last name you want to search for");
-                        String last_Name = scanner.nextLine();
 
-                        ArrayList<Guest> guests = ds.getGuestByLastName(last_Name);
-                        System.out.println("People with last name " + last_Name + " :");
-                        for (Guest guest : guests) {
-                            System.out.println(guest);
+                        searchGuestFromReservation();
+                        System.out.println("Press 1 to continue adding the guest or 2 to do a new search");
+                        choice = Integer.parseInt(scanner.nextLine());
+
+                        if (choice == 1) {
+                            addGuestToReservation();
 
                         }
+                        else if (choice == 2) {
+                            searchGuestFromReservation();
+                        }
 
-                        addGuestToReservation();
 
-
-                    } else if (reservationChoice == 3) {
-
-                        System.out.println("Enter a company ID");
-                        int company_ID = Integer.parseInt(scanner.nextLine());
-                        ds.getGuestByCompany_ID(company_ID);
-                        addGuestToReservation();
-                        System.out.println("Guest added");
-                        System.out.println("Going back to main menu");
-                        Output.threadSleep();
-                        Output.emptyScreen();
-                        mainMenu();
 
 
                     } else {
@@ -541,6 +539,25 @@ public class Menu {
             dateOfBirth = scanner.nextLine();
             return ds.createGuest(new Guest(firstName, lastName, phoneNumber, emailAdress, dateOfBirth));
 
+
+
+
+
+        }
+
+        public void searchGuestFromReservation() {
+
+            System.out.println("Enter the guests last name you want to search for");
+            String last_Name = scanner.nextLine();
+            ArrayList<Guest> guests = ds.getGuestByLastName(last_Name);
+                      System.out.println("People with last name " + last_Name + " :");
+                        for (Guest guest : guests) {
+                            System.out.println(guest);
+
+                        }
+                        if (guests.size() == 0) {
+                            System.out.println("No guest with that name found");
+                        }
 
 
 

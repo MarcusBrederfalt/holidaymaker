@@ -332,6 +332,8 @@ public class DataSource {
 
     public ArrayList<Guest> getGuestByLastName(String inputLastName) {
 
+        int counter = 0;
+
         ArrayList<Guest> guests = new ArrayList<>();
 
         String query = "SELECT * FROM guest WHERE Last_Name LIKE ? ";
