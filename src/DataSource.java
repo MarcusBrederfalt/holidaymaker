@@ -153,7 +153,7 @@ public class DataSource {
     public ArrayList<Reservation> getAllReservations() {
 
         ArrayList<Reservation> reservations = new ArrayList<>();
-        String query = "SELECT Reservation_ID FROM reservation";
+        String query = "SELECT * FROM reservation";
 
         try {
             PreparedStatement preparedStatement = conn.prepareStatement(query);
@@ -162,8 +162,15 @@ public class DataSource {
             while (resultSet.next()) {
 
                 int reservationID = resultSet.getInt("Reservation_ID");
+                String check_In = resultSet.getString("Check_In");
+                String check_Out = resultSet.getString("Check_Out");
+                int room_ID = resultSet.getInt("Room_ID");
+                int hotel_ID = resultSet.getInt("Hotel_ID");
+                String number_Of_Guests = resultSet.getString("Number_Of_Guests");
+                int guest_ID = resultSet.getInt("Guest_ID");
+                int room_Nr = resultSet.getInt("Room_Number");
 
-                reservations.add(new Reservation(reservationID));
+                reservations.add(new Reservation(reservationID, check_In, check_Out, room_ID, hotel_ID, number_Of_Guests, guest_ID, room_Nr));
 
             }
 
@@ -312,40 +319,7 @@ public class DataSource {
     }
 
 
-    public ArrayList<Room_Location> getFreeRooms(String check_Out, String check_In, int bookHotel_ID, int bookRoomSize) {
 
-        ArrayList<Room_Location> freeRooms = new ArrayList<>();
-
-
-        String query = "SELECT room_location.room_Number FROM room_location " +
-                "LEFT JOIN reservation ON room_location.Room_Number = reservation.Room_Number AND " +
-                "reservation.Check_Out >= ? AND reservation.Check_In <= ? WHERE room_location.Hotel_ID = ? AND room_location.Room_ID = ? and reservation.Reservation_ID IS NULL";
-
-
-        try {
-            PreparedStatement preparedStatement = conn.prepareStatement(query);
-            preparedStatement.setString(1, check_In);
-            preparedStatement.setString(2, check_Out);
-            preparedStatement.setInt(3, bookHotel_ID);
-            preparedStatement.setInt(4, bookRoomSize);
-
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()) {
-
-
-                int room_Number = resultSet.getInt("Room_Number");
-                freeRooms.add(new Room_Location(room_Number));
-
-            }
-
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return freeRooms;
-    }
 
     public ArrayList<Guest> getGuestByLastName(String inputLastName) {
 
@@ -500,8 +474,10 @@ public class DataSource {
 
     public ArrayList<Guest> getGuestByCompany_ID(int company_ID) {
 
+        int counter = 0;
+
         ArrayList<Guest> guests = new ArrayList<>();
-        String query = "SELECT First_Name, Last_Name, Phone_Number, Email_Adress, Date_Of_Birth FROM guest WHERE Reservation_ID = ?";
+        String query = "SELECT First_Name, Last_Name, Phone_Number, Email_Adress, Date_Of_Birth FROM guest WHERE Company_ID = ?";
 
         try {
             PreparedStatement preparedStatement = conn.prepareStatement(query);
@@ -510,6 +486,7 @@ public class DataSource {
 
 
             while (resultSet.next()) {
+                counter ++;
                 String firstName = resultSet.getString("First_Name");
                 String lastName = resultSet.getString("Last_Name");
                 String phoneNumber = resultSet.getString("Phone_Number");
@@ -517,8 +494,12 @@ public class DataSource {
                 String dateOfBirth = resultSet.getString("Date_Of_Birth");
 
 
-                guests.add(new Guest(firstName, lastName, phoneNumber, emailAdress, dateOfBirth));
+                System.out.println("First name: " + firstName + " Last Name: " + lastName + " Phone number: " + phoneNumber + " Email adress " + emailAdress + " Date of birth: " +dateOfBirth);
 
+            }
+
+            if (counter == 0) {
+                System.out.println("No one is registred on company with id " + company_ID);
             }
 
 
