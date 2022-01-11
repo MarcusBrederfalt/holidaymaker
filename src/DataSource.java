@@ -135,8 +135,8 @@ public class DataSource {
                 String hotel_facilities_Name = resultSet.getString("Hotel_Facitilies_Name");
                 String facility_Name = resultSet.getString("Facility_Name");
                 String hotelName = resultSet.getString("Hotel_Name");
-                int hotel_ID = resultSet.getInt("Hotel_ID");
-                System.out.println("Facility name: " + facility_Name + "  " + "Type of facility: " + hotel_facilities_Name + " Belong to hotel: " + hotelName + hotel_ID);
+              //  int hotel_ID = resultSet.getInt("Hotel_ID");
+                System.out.println("Facility name: " + facility_Name + "  " + "Type of facility: " + hotel_facilities_Name + " Belong to hotel: " + hotelName);
 
             }
             if (counter == 0) {
@@ -150,35 +150,44 @@ public class DataSource {
     }
 
 
-    public ArrayList<Reservation> getAllReservations() {
-
-        ArrayList<Reservation> reservations = new ArrayList<>();
-        String query = "SELECT * FROM reservation";
+    public void getAllReservations(String lastName) {
+        int counter = 0;
+        String query = "SELECT guest.First_Name, guest.Last_Name, reservation.* FROM guest INNER JOIN reservation ON guest.Reservation_ID = reservation.Reservation_ID WHERE guest.Last_Name LIKE" +
+                " '%" + lastName + "%'";
 
         try {
             PreparedStatement preparedStatement = conn.prepareStatement(query);
             ResultSet resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
+            counter ++;
 
-                int reservationID = resultSet.getInt("Reservation_ID");
-                String check_In = resultSet.getString("Check_In");
-                String check_Out = resultSet.getString("Check_Out");
-                int room_ID = resultSet.getInt("Room_ID");
-                int hotel_ID = resultSet.getInt("Hotel_ID");
-                String number_Of_Guests = resultSet.getString("Number_Of_Guests");
-                int guest_ID = resultSet.getInt("Guest_ID");
-                int room_Nr = resultSet.getInt("Room_Number");
+            String first_Name = resultSet.getString("First_Name");
+            String last_Name = resultSet.getString("Last_Name");
+            int reservation_ID = resultSet.getInt("Reservation_ID");
+            String check_In = resultSet.getString("Check_In");
+            String check_Out = resultSet.getString("Check_Out");
+            int room_ID = resultSet.getInt("Room_ID");
+            int hotel_ID = resultSet.getInt("Hotel_ID");
+            int guest_ID = resultSet.getInt("Guest_ID");
+            int room_Number = resultSet.getInt("Room_Number");
 
-                reservations.add(new Reservation(reservationID, check_In, check_Out, room_ID, hotel_ID, number_Of_Guests, guest_ID, room_Nr));
+                System.out.println("First name " + first_Name + " , " + "Last name: " + last_Name + " , " + "Reservation ID: " + reservation_ID + " , " +
+                        "Check in: " + check_In + " , " + "Check out: " + " , " + "Room ID: " + room_ID);
+                System.out.println("Hotel ID " + hotel_ID + " , " +
+                        "Guest ID: " + guest_ID + " , " + "Room number: " + room_Number);
 
+            }
+
+            if (counter == 0) {
+                System.out.println("No guest found with that last name");
             }
 
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return reservations;
+
     }
 
     public void addGuestToReservation(int addReservation_ID, int addGuestID) {
@@ -412,7 +421,7 @@ public class DataSource {
 
     public void getCompanyID() {
 
-        String query = "SELECT Company_ID FROM guest WHERE Company_ID IS NOT NULL";
+        String query = "SELECT MAX (Company_ID) AS 'maxCompany' FROM guest WHERE Company_ID IS NOT NULL";
 
         try {
             PreparedStatement preparedStatement = conn.prepareStatement(query);
@@ -420,10 +429,10 @@ public class DataSource {
 
 
             while (resultSet.next()) {
-                int company_ID = resultSet.getInt("Company_ID");
+                int company_ID = resultSet.getInt("maxCompany");
 
 
-                System.out.println(company_ID);
+                System.out.println("Next free company ID is " + (company_ID + 1));
             }
 
 
@@ -432,7 +441,7 @@ public class DataSource {
         }
     }
 
-    public ArrayList<Room_Location> getFreeRooms2(String check_Out, String check_In, int bookHotel_ID, int companyAmount) {
+    public ArrayList<Room_Location> getFreeRooms(String check_Out, String check_In, int bookHotel_ID, int companyAmount) {
 
         ArrayList<Room_Location> freeRooms = new ArrayList<>();
 

@@ -5,17 +5,15 @@ public class Reservation {
     private String check_Out;
     private int room_ID;
     private int hotel_ID;
-    private String number_Of_Guests;
     private int guest_ID;
     private int room_Number;
 
-    public Reservation(int reservation_ID, String check_In, String check_Out, int room_ID, int hotel_ID, String number_Of_Guests, int guest_ID, int room_Number) {
+    public Reservation(int reservation_ID, String check_In, String check_Out, int room_ID, int hotel_ID, int guest_ID, int room_Number) {
         this.reservation_ID = reservation_ID;
         this.check_In = check_In;
         this.check_Out = check_Out;
         this.room_ID = room_ID;
         this.hotel_ID = hotel_ID;
-        this.number_Of_Guests = number_Of_Guests;
         this.guest_ID = guest_ID;
         this.room_Number = room_Number;
     }
@@ -77,14 +75,6 @@ public class Reservation {
         this.hotel_ID = hotel_ID;
     }
 
-    public String getNumber_Of_Guests() {
-        return number_Of_Guests;
-    }
-
-    public void setNumber_Of_Guests(String number_Of_Guests) {
-        this.number_Of_Guests = number_Of_Guests;
-    }
-
     public int getGuest_ID() {
         return guest_ID;
     }
@@ -103,17 +93,26 @@ public class Reservation {
 
     @Override
     public String toString() {
-        return "Reservation{" +
-                "reservation_ID=" + reservation_ID +
-                ", check_In='" + check_In + '\'' +
-                ", check_Out='" + check_Out + '\'' +
-                ", room_ID=" + room_ID +
-                ", hotel_ID=" + hotel_ID +
-                ", number_Of_Guests='" + number_Of_Guests + '\'' +
-                ", guest_ID=" + guest_ID +
-                ", room_Number=" + room_Number +
-                '}';
+
+        return "Reservation_ID: = " + reservation_ID + " ," + " Check_In: " + check_In + " ," + "Check_Out: " + check_Out + " , " + "Room ID: " +
+                room_ID + " , " + "Hotel ID: " + hotel_ID + " , " + "Guest ID " + guest_ID + " , " + "Room number: " + room_Number;
+
     }
+//        return "" +
+//                "" +
+//                "" +
+//                "" +
+//                "Reservation{" +
+//                "reservation_ID=" + reservation_ID +
+//                ", check_In='" + check_In + '\'' +
+//                ", check_Out='" + check_Out + '\'' +
+//                ", room_ID=" + room_ID +
+//                ", hotel_ID=" + hotel_ID +
+//                ", number_Of_Guests='" + number_Of_Guests + '\'' +
+//                ", guest_ID=" + guest_ID +
+//                ", room_Number=" + room_Number +
+//                '}';
+//    }
 
 
 }

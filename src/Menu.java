@@ -31,7 +31,7 @@ public class Menu {
             System.out.println();
             System.out.println("1. Create a guest");
             System.out.println("2. Search for a guest by last name");
-            System.out.println("3. Make a reservation / See facilites etc");
+            System.out.println("3. Make a reservation / See facilites");
             System.out.println("4. Add guests to company");
             System.out.println("5. Show guests in a company");
             System.out.println("6. Cancel reservation");
@@ -66,7 +66,7 @@ public class Menu {
 
                     System.out.println("Please enter a company ID");
                     int company_ID = Integer.parseInt(scanner.nextLine());
-                    ds.getGuestBy(company_ID);
+                    ds.getGuestByCompany_ID(company_ID);
                     Output.pause();
                     Output.emptyScreen();
                     break;
@@ -123,19 +123,27 @@ public class Menu {
 
     public void addGuestToCompany() {
         System.out.println("Which company do you want to add to?");
-        System.out.println("Press 1 to see a list of free company numbers or 2 to continue");
+        System.out.println("Press 1 to see a the next free company id or press 2 to continue to add");
+        System.out.println("Press 3 to go back to main menu");
         int choice = Integer.parseInt(scanner.nextLine());
 
         if (choice == 1) {
 
             ds.getCompanyID();
+            Output.threadSleep();
+            Output.emptyScreen();
+
+            addGuestToCompany();
+
+        } else if (choice == 2) {
+
             addGuestToCompanyWithID();
 
-        } else {
 
-            addGuestToCompanyWithID();
+        }
 
-
+        else {
+            mainMenu();
         }
     }
 
@@ -165,7 +173,10 @@ public class Menu {
         ds.insertGuestToReservation(addGuestID, reservationID);
         ds.addGuestToReservation(reservationID, addGuestID);
 
+        System.out.println("Guest added");
         System.out.println("Going back to main menu");
+        Output.threadSleep();
+        Output.emptyScreen();
         mainMenu();
 
 
@@ -174,7 +185,7 @@ public class Menu {
     public void cancelReservation() {
 
         System.out.println("Press 1 to cancel a reservation with reservation id");
-        System.out.println("Press 2 to list all reservations");
+        System.out.println("Press 2 to search for a reservation with guest last name");
         int cancelReservation = Integer.parseInt(scanner.nextLine());
 
         switch (cancelReservation) {
@@ -192,11 +203,9 @@ public class Menu {
 
 
             case 2:
-                ArrayList<Reservation> reservations = ds.getAllReservations();
-
-                for (Reservation reserv : reservations) {
-                    System.out.println(reserv);
-                }
+                System.out.println("Enter last name to search for");
+                String last_Name = scanner.nextLine();
+                ds.getAllReservations(last_Name);
 
                 System.out.println("Press 1 to go back or press 2 to go back to main menu");
                 cancelReservation = Integer.parseInt(scanner.nextLine());
@@ -431,7 +440,7 @@ public class Menu {
         companyAmount = Integer.parseInt(scanner.nextLine());
 
 
-        ArrayList<Room_Location> freeRoom = ds.getFreeRooms2(check_Out, check_In, bookHotel_ID, companyAmount);
+        ArrayList<Room_Location> freeRoom = ds.getFreeRooms(check_Out, check_In, bookHotel_ID, companyAmount);
 
         for (Room_Location location : freeRoom) {
             System.out.println(location);
@@ -439,8 +448,11 @@ public class Menu {
         }
 
         if (freeRoom.size() == 0) {
-            System.out.println("No rooms free");
-            System.out.println("Please do another search, going back to main menu");
+            System.out.println("No free rooms");
+            System.out.println("Please do another search");
+            Output.threadSleep();
+            Output.emptyScreen();
+            mainMenu();
 
         } else {
 
@@ -452,13 +464,14 @@ public class Menu {
                 case 1:
 
                     System.out.println("Room booked with reservation id " + bookRoom(check_In, check_Out, bookHotel_ID, companyAmount));
-                    System.out.println("Which guest will be on the reservation? Be a contact?");
+                    System.out.println("Which guest will be the contact for the reservation?");
                     System.out.println("Press 1 to add guest 2. Search for a guest by last name 3. See guests in company 4. Go back to main menu");
                     reservationChoice = Integer.parseInt(scanner.nextLine());
 
                     if (reservationChoice == 1) {
 
                         addGuestToReservation();
+
 
                     } else if (reservationChoice == 2) {
                         System.out.println("Please enter a last name you want to search for");
@@ -472,10 +485,7 @@ public class Menu {
                         }
 
                         addGuestToReservation();
-                        System.out.println("Guest added");
-                        System.out.println("Going back to main menu");
-                        Output.threadSleep();
-                        Output.emptyScreen();
+
 
                     } else if (reservationChoice == 3) {
 
@@ -483,6 +493,11 @@ public class Menu {
                         int company_ID = Integer.parseInt(scanner.nextLine());
                         ds.getGuestByCompany_ID(company_ID);
                         addGuestToReservation();
+                        System.out.println("Guest added");
+                        System.out.println("Going back to main menu");
+                        Output.threadSleep();
+                        Output.emptyScreen();
+                        mainMenu();
 
 
                     } else {
