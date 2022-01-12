@@ -25,6 +25,11 @@ public class DataSource {
         }
     }
 
+    /** Method to get all the guests registred
+     *
+     * @return guests
+     */
+
     public ArrayList<Guest> getAllGuests() {
 
         ArrayList<Guest> guests = new ArrayList<>();
@@ -57,6 +62,12 @@ public class DataSource {
         return guests;
     }
 
+    /**
+     * Method to create guest
+     * @param newGuest
+     * @return incrementID, ID for guest created
+     */
+
     public int createGuest(Guest newGuest) {
 
         int incrementID = 0;
@@ -85,6 +96,13 @@ public class DataSource {
 
     }
 
+    /**
+     *  Method to show all hotels in the database, return an arraylist.
+     * @return hotels
+     */
+
+
+
     public ArrayList<Hotel> getAllHotels() {
 
         ArrayList<Hotel> hotels = new ArrayList<>();
@@ -112,6 +130,13 @@ public class DataSource {
         }
         return hotels;
     }
+
+
+    /**
+     *  Method to search for facilitys located in a hotel
+     * @param Hotel_ID decides which hotel to search in.
+     */
+
 
     public void getAllFacilitys(int Hotel_ID) {
         int counter = 0;
@@ -148,6 +173,11 @@ public class DataSource {
         }
 
     }
+
+    /**
+     * Method to search for a guest by last name
+     * @param lastName
+     */
 
 
     public void getAllReservations(String lastName) {
@@ -190,6 +220,13 @@ public class DataSource {
 
     }
 
+    /**
+     * Method to add a guest to a reservation
+     *
+     * @param addReservation_ID
+     * @param addGuestID
+     */
+
     public void addGuestToReservation(int addReservation_ID, int addGuestID) {
 
         String query = "UPDATE guest SET Reservation_ID = ? WHERE Guest_ID = ?";
@@ -207,6 +244,12 @@ public class DataSource {
         }
 
     }
+
+    /**
+     * Method to add a guest to a company
+     * @param addCompany_ID
+     * @param addGuestID
+     */
 
     public void addGuestToCompany(int addCompany_ID, int addGuestID) {
 
@@ -227,6 +270,12 @@ public class DataSource {
     }
 
 
+    /**
+     * Method to update, set a guest to a reservation id
+     * @param addGuestID
+     * @param addReservation_ID
+     */
+
     public void insertGuestToReservation(int addGuestID, int addReservation_ID) {
 
         String query = "UPDATE reservation SET Guest_ID = ? WHERE Reservation_ID = ?";
@@ -246,6 +295,11 @@ public class DataSource {
     }
 
 
+    /**
+     * Method to delete a reservation, sets fields null in the database.
+     * @param addReservation_ID
+     */
+
     public void cancelReservation(int addReservation_ID) {
 
         String query = "UPDATE reservation SET Check_In = NULL, Check_Out = NULL, Room_ID = NULL, Hotel_ID = NULL + Guest_ID = NULL, Room_Number = NULL WHERE Reservation_ID = ?";
@@ -263,6 +317,12 @@ public class DataSource {
 
 
     }
+
+    /**
+     * Get all guests based on reservation_ID
+     * @param reservation_ID
+     * @return guests
+     */
 
     public ArrayList<Guest> getGuestByReservation(int reservation_ID) {
 
@@ -294,6 +354,11 @@ public class DataSource {
         return guests;
     }
 
+    /**
+     *  Method to create a reservation
+     * @param reservation
+     * @return reservation id.
+     */
 
     public int createReservation(Reservation reservation) {
 
@@ -392,33 +457,9 @@ public class DataSource {
 
     }
 
-    public void getGuestBy(int reservation_ID) {
-
-        String query = "SELECT First_Name, Last_Name, Phone_Number, Email_Adress, Date_Of_Birth FROM guest WHERE Reservation_ID = ?";
-
-        try {
-            PreparedStatement preparedStatement = conn.prepareStatement(query);
-            preparedStatement.setInt(1, reservation_ID);
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            System.out.println("Guest in reservation with ID " + reservation_ID);
-
-            while (resultSet.next()) {
-                String firstName = resultSet.getString("First_Name");
-                String lastName = resultSet.getString("Last_Name");
-                String phoneNumber = resultSet.getString("Phone_Number");
-                String emailAdress = resultSet.getString("Email_Adress");
-                String dateOfBirth = resultSet.getString("Date_Of_Birth");
-
-                System.out.println("First name: " + firstName + " Last name: " + lastName + " Phone_Number: " + phoneNumber + " Email adress: " + emailAdress + " Date of birth: " + dateOfBirth);
-            }
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-
-        }
-    }
+    /**
+     * Method to get the lastest company id that is free.
+     */
 
     public void getCompanyID() {
 
@@ -441,6 +482,16 @@ public class DataSource {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Method to search for free rooms in the database takes parameter listed on the next line to search.
+     * @param check_Out
+     * @param check_In
+     * @param bookHotel_ID
+     * @param companyAmount
+     * @return freeRooms // a list of free rooms.
+     */
+
 
     public ArrayList<Room_Location> getFreeRooms(String check_Out, String check_In, int bookHotel_ID, int companyAmount) {
 
@@ -477,13 +528,19 @@ public class DataSource {
         return freeRooms;
     }
 
+    /**
+     * Method to get guests by company ID
+     * @param company_ID
+     * @return guests
+     */
+
 
     public ArrayList<Guest> getGuestByCompany_ID(int company_ID) {
 
         int counter = 0;
 
         ArrayList<Guest> guests = new ArrayList<>();
-        String query = "SELECT First_Name, Last_Name, Phone_Number, Email_Adress, Date_Of_Birth FROM guest WHERE Company_ID = ?";
+        String query = "SELECT Guest_ID, First_Name, Last_Name, Phone_Number, Email_Adress, Date_Of_Birth FROM guest WHERE Company_ID = ?";
 
         try {
             PreparedStatement preparedStatement = conn.prepareStatement(query);
@@ -493,6 +550,7 @@ public class DataSource {
 
             while (resultSet.next()) {
                 counter ++;
+                int guest_ID = resultSet.getInt("Guest_ID");
                 String firstName = resultSet.getString("First_Name");
                 String lastName = resultSet.getString("Last_Name");
                 String phoneNumber = resultSet.getString("Phone_Number");
@@ -500,7 +558,7 @@ public class DataSource {
                 String dateOfBirth = resultSet.getString("Date_Of_Birth");
 
 
-                System.out.println("First name: " + firstName + " Last Name: " + lastName + " Phone number: " + phoneNumber + " Email adress " + emailAdress + " Date of birth: " +dateOfBirth);
+                System.out.println("Guest ID: " + guest_ID + " First name: " + firstName + " Last Name: " + lastName + " Phone number: " + phoneNumber + " Email adress " + emailAdress + " Date of birth: " +dateOfBirth);
 
             }
 
