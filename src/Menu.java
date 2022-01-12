@@ -25,6 +25,11 @@ public class Menu {
 
     }
 
+    /**
+     * mainMenu class, starts when Menu class being called
+     * Here the administrator can make several options.
+     */
+
     private void mainMenu() {
 
         System.out.println("Welcome to the holiday booking system");
@@ -107,6 +112,10 @@ public class Menu {
     }
 
 
+    /**
+     * Method to display all guests
+     */
+
     private void showAllGuest() {
         ArrayList<Guest> guests = ds.getAllGuests();
         for (Guest guest : guests) {
@@ -116,6 +125,9 @@ public class Menu {
         Output.threadSleep();
     }
 
+    /**
+     * Method to print out all the hotels in the database
+     */
 
     private void showAllHotels() {
         ArrayList<Hotel> hotels = ds.getAllHotels();
@@ -125,6 +137,10 @@ public class Menu {
 
 
     }
+
+    /**
+     * method to add people to reservation
+     */
 
     private void addPeopleToReservation() {
         System.out.println("Which reservation do you want to add to?");
@@ -139,6 +155,11 @@ public class Menu {
 
 
     }
+
+    /**
+     * With this method we can see the latest company id that is free
+     * to add guests to a company we call addGuestToCompanyWithID from this method
+     */
 
     private void addGuestToCompany() {
         System.out.println("Which company do you want to add to?");
@@ -181,6 +202,9 @@ public class Menu {
 
     }
 
+    /**
+     * Method to add guest to a reservation
+     */
 
     private void addGuestToReservation() {
 
@@ -202,6 +226,10 @@ public class Menu {
 
     }
 
+    /**
+     * Method to cancel a reservation
+     */
+
     private void cancelReservation() {
 
         System.out.println("Enter the reservation ID");
@@ -218,7 +246,9 @@ public class Menu {
     }
 
 
-
+    /**
+     * Method to show guests by reservation id
+     */
 
     private void showGuestsByReservation() {
 
@@ -233,6 +263,10 @@ public class Menu {
 
     }
 
+
+    /**
+     *  method to show guests by searching for last name
+     */
     private void showGuestsByLastName() {
 
         System.out.println("Enter the last name you want to search for");
@@ -256,6 +290,14 @@ public class Menu {
 
     }
 
+    /**
+     * Book room method, the method gets parameters from the method bookRoomHotel() and creates a reservation
+     * @param check_In
+     * @param check_Out
+     * @param bookRoomSize
+     * @param bookHotel_ID
+     * @return
+     */
 
     private int bookRoom(String check_In, String check_Out, int bookRoomSize, int bookHotel_ID) {
 
@@ -266,6 +308,11 @@ public class Menu {
 
 
     }
+
+    /**
+     *  Method to list all the hotels and the facilities, from this method we can call addFacility() to be able
+     *  to add facilities.
+     */
 
     private void manageFacilities() {
 
@@ -304,6 +351,8 @@ public class Menu {
         }
     }
 
+
+
     private int addFacility() {
 
         System.out.println("Please enter the hotel ID");
@@ -326,6 +375,11 @@ public class Menu {
 
     }
 
+    /**
+     * Method with several choices, search facilities to a hotel, add facilities, search for guest in company,
+     * search for free rooms.
+     *
+     */
 
     private void searchFreeRoomsAndFacilitys() {
 
@@ -503,6 +557,11 @@ public class Menu {
         }
     }
 
+    /**
+     * method to create a guest,
+     * @return guest-id
+     */
+
 
     private int createGuest() {
 
@@ -530,7 +589,11 @@ public class Menu {
 
         }
 
-        public void searchGuestFromReservation() {
+    /**
+     * Method to search for reservation guest last name
+     */
+
+    public void searchGuestFromReservation() {
 
             System.out.println("Enter the guests last name you want to search for");
             String last_Name = scanner.nextLine();
