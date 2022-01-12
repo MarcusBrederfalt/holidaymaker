@@ -25,8 +25,8 @@ public class Menu {
         System.out.println("");
 
 
-        boolean runMenu = true;
-        while (runMenu) {
+          boolean runMenu = true;
+         while (runMenu) {
 
             System.out.println("Main Menu");
             System.out.println();
@@ -79,7 +79,7 @@ public class Menu {
 
                 case 7:
                     System.out.println("Welcome back, exiting the program");
-                    runMenu = false;
+                    System.exit(0);
                     break;
 
                     default:
@@ -448,7 +448,10 @@ public class Menu {
 
         ArrayList<Room_Location> freeRoom = ds.getFreeRooms(check_Out, check_In, bookHotel_ID, companyAmount);
 
-        System.out.println("Here is a list of free rooms with capacity to house the company");
+        System.out.println("Presenting a list of free rooms with capacity to house the company");
+        System.out.println("First number is the hotel id, the second is the room type");
+        System.out.println("1 for single room, 2 for double and 3 for suite");
+        Output.threadSleep();
 
         for (Room_Location location : freeRoom) {
             System.out.println(location);

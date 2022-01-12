@@ -248,8 +248,7 @@ public class DataSource {
 
     public void cancelReservation(int addReservation_ID) {
 
-        String query = "UPDATE reservation SET Check_In = NULL, Check_Out = NULL, Room_ID = NULL, Hotel_ID = NULL, Number_Of_Guests = NULL" +
-                ", Guest_ID = NULL, Room_Number = NULL WHERE Reservation_ID = ?";
+        String query = "UPDATE reservation SET Check_In = NULL, Check_Out = NULL, Room_ID = NULL, Hotel_ID = NULL + Guest_ID = NULL, Room_Number = NULL WHERE Reservation_ID = ?";
 
 
         try {
@@ -451,10 +450,6 @@ public class DataSource {
         String query = "SELECT room_location.room_Number FROM room_location  LEFT JOIN reservation ON room_location.Room_Number = reservation.Room_Number AND reservation.Check_Out >= ? AND " +
                 "reservation.Check_In <= ? WHERE room_location.Hotel_ID = ? and reservation.Reservation_ID IS NULL AND (SELECT room.Room_Capacity FROM room WHERE room_location.Room_ID = " +
                 "room.Room_ID AND room.Room_Capacity >= ?)";
-
-        //   String query2 = "SELECT room_location.room_Number FROM room_location " +
-        //         "LEFT JOIN reservation ON room_location.Room_Number = reservation.Room_Number AND " +
-        //       "reservation.Check_Out >= ? AND reservation.Check_In <= ? WHERE room_location.Hotel_ID = ? AND room_location.Room_ID = ? and reservation.Reservation_ID IS NULL";
 
 
         try {
